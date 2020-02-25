@@ -1,0 +1,113 @@
+Build started at 2020-02-21T12:09:25.045114
+Main binary: /usr/bin/python3
+Python system: Linux
+The Meson build system
+Version: 0.49.2
+Source dir: /home/user/myGTK/subin/subin_project
+Build dir: /home/user/myGTK/subin/subin_project/obj-x86_64-linux-gnu
+Build type: native build
+Project name: gooroom-example
+Project version: 0.1.0
+Sanity testing C compiler: cc
+Is cross compiler: False.
+Sanity check compiler command line: cc /home/user/myGTK/subin/subin_project/obj-x86_64-linux-gnu/meson-private/sanitycheckc.c -o /home/user/myGTK/subin/subin_project/obj-x86_64-linux-gnu/meson-private/sanitycheckc.exe
+Sanity check compile stdout:
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command: /home/user/myGTK/subin/subin_project/obj-x86_64-linux-gnu/meson-private/sanitycheckc.exe
+Appending CFLAGS from environment: '-g -O2 -fdebug-prefix-map=/home/user/myGTK/subin/subin_project=. -fstack-protector-strong -Wformat -Werror=format-security'
+Appending LDFLAGS from environment: '-Wl,-z,relro -Wl,-z,now -Wl,-z,defs -Wl,--as-needed'
+Appending CPPFLAGS from environment: '-Wdate-time -D_FORTIFY_SOURCE=2'
+Native C compiler: cc (gcc 8.3.0 "cc (Debian 8.3.0-6) 8.3.0")
+Build machine cpu family: x86_64
+Build machine cpu: x86_64
+Configuring gooroom-example-config.h using configuration
+Program desktop-file-validate found: YES (/usr/bin/desktop-file-validate)
+Adding test "Validate desktop file"
+Program appstream-util found: YES (/usr/bin/appstream-util)
+Adding test "Validate appstream file"
+Program glib-compile-schemas found: YES (/usr/bin/glib-compile-schemas)
+Adding test "Validate schema file"
+Found pkg-config: /usr/bin/pkg-config (0.29)
+Determining dependency 'gio-2.0' with pkg-config executable '/usr/bin/pkg-config'
+Called `/usr/bin/pkg-config --modversion gio-2.0` -> 0
+2.58.3
+Called `/usr/bin/pkg-config --cflags gio-2.0` -> 0
+-pthread -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/uuid -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+Called `/usr/bin/pkg-config gio-2.0 --libs` -> 0
+-L/usr/lib/x86_64-linux-gnu -lgio-2.0 -lgobject-2.0 -lglib-2.0
+Called `/usr/bin/pkg-config gio-2.0 --libs` -> 0
+-lgio-2.0 -lgobject-2.0 -lglib-2.0
+Running compile:
+Working directory:  /tmp/tmp03u6io6a
+Command line:  cc /tmp/tmp03u6io6a/testfile.c -pipe -D_FILE_OFFSET_BITS=64 -o /tmp/tmp03u6io6a/output.exe -g -O2 -fdebug-prefix-map=/home/user/myGTK/subin/subin_project=. -fstack-protector-strong -Wformat -Werror=format-security -Wl,-z,relro -Wl,-z,now -Wl,-z,defs -Wl,--as-needed -O0 
+
+Code:
+ #include<stdio.h>
+        
+        int main(int argc, char **argv) {
+            printf("%ld\n", (long)(sizeof(void *)));
+            return 0;
+        };
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Program stdout:
+
+8
+
+Program stderr:
+
+
+Running compile:
+Working directory:  /tmp/tmpsipfv3oi
+Command line:  cc /tmp/tmpsipfv3oi/testfile.c -pipe -D_FILE_OFFSET_BITS=64 -c -o /tmp/tmpsipfv3oi/output.obj -g -O2 -fdebug-prefix-map=/home/user/myGTK/subin/subin_project=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -O0 --print-search-dirs 
+
+Code:
+ 
+Compiler stdout:
+ install: /usr/lib/gcc/x86_64-linux-gnu/8/
+programs: =/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../x86_64-linux-gnu/bin/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../x86_64-linux-gnu/bin/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../x86_64-linux-gnu/bin/
+libraries: =/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../x86_64-linux-gnu/lib/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../x86_64-linux-gnu/lib/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../x86_64-linux-gnu/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib/:/lib/x86_64-linux-gnu/8/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/8/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../x86_64-linux-gnu/lib/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../:/lib/:/usr/lib/
+
+Compiler stderr:
+ 
+Dependency gio-2.0 found: YES 2.58.3
+Determining dependency 'gtk+-3.0' with pkg-config executable '/usr/bin/pkg-config'
+Called `/usr/bin/pkg-config --modversion gtk+-3.0` -> 0
+3.24.5
+Called `/usr/bin/pkg-config --cflags gtk+-3.0` -> 0
+-pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/libdrm -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/uuid -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+Called `/usr/bin/pkg-config gtk+-3.0 --libs` -> 0
+-L/usr/lib/x86_64-linux-gnu -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
+Called `/usr/bin/pkg-config gtk+-3.0 --libs` -> 0
+-lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
+Dependency gtk+-3.0 found: YES 3.24.5
+Determining dependency 'libgtop-2.0' with pkg-config executable '/usr/bin/pkg-config'
+Called `/usr/bin/pkg-config --modversion libgtop-2.0` -> 0
+2.38.0
+Called `/usr/bin/pkg-config --cflags libgtop-2.0` -> 0
+-I/usr/include/libgtop-2.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+Called `/usr/bin/pkg-config libgtop-2.0 --libs` -> 0
+-L/usr/lib/x86_64-linux-gnu -lgtop-2.0 -lglib-2.0
+Called `/usr/bin/pkg-config libgtop-2.0 --libs` -> 0
+-lgtop-2.0 -lglib-2.0
+Dependency libgtop-2.0 found: YES 2.38.0
+Determining dependency 'glib-2.0' with pkg-config executable '/usr/bin/pkg-config'
+Called `/usr/bin/pkg-config --modversion glib-2.0` -> 0
+2.58.3
+Called `/usr/bin/pkg-config --cflags glib-2.0` -> 0
+-I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+Called `/usr/bin/pkg-config glib-2.0 --libs` -> 0
+-L/usr/lib/x86_64-linux-gnu -lglib-2.0
+Called `/usr/bin/pkg-config glib-2.0 --libs` -> 0
+-lglib-2.0
+Dependency glib-2.0 found: YES 2.58.3
+Determining dependency 'glib-2.0' with pkg-config executable '/usr/bin/pkg-config'
+Program build-aux/meson/postinstall.py found: YES (/home/user/myGTK/subin/subin_project/build-aux/meson/postinstall.py)
+Build targets in project: 8
+Found ninja-1.8.2 at /usr/bin/ninja

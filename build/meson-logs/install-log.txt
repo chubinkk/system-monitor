@@ -1,0 +1,13 @@
+# List of files installed by Meson
+# Does not contain files installed by custom scripts.
+/home/user/myGTK/subin/subin_project/install/share/applications/kr.gooroom.Gooroom-Example.desktop
+/home/user/myGTK/subin/subin_project/install/share/appdata/kr.gooroom.Gooroom-Example.appdata.xml
+/home/user/myGTK/subin/subin_project/install/bin/gooroom-example
+/home/user/myGTK/subin/subin_project/install/share/glib-2.0/schemas/kr.gooroom.Gooroom-Example.gschema.xml
+/home/user/myGTK/subin/subin_project/install/share/glib-2.0/schemas
+/home/user/myGTK/subin/subin_project/install/share/glib-2.0
+/home/user/myGTK/subin/subin_project/install/bin
+/home/user/myGTK/subin/subin_project/install/share/appdata
+/home/user/myGTK/subin/subin_project/install/share/applications
+/home/user/myGTK/subin/subin_project/install/share
+/home/user/myGTK/subin/subin_project/install

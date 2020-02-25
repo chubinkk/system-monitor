@@ -1,0 +1,8 @@
+data/kr.gooroom.Gooroom-Example.desktop.in
+data/kr.gooroom.Gooroom-Example.appdata.xml.in
+data/kr.gooroom.Gooroom-Example.gschema.xml
+src/gooroom-example-window.ui
+src/main.c
+src/gooroom-example-application.c
+src/gooroom-example-window.c
+
