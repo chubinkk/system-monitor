@@ -9,3 +9,9 @@
 1	455	1582261653	data/kr.gooroom.Gooroom-Example.desktop	d7858c0f8c966250
 1	464	1582261653	data/kr.gooroom.Gooroom-Example.appdata.xml	1e12d8b23c25ef19
 464	1086	0	meson-install	9bd7faa9472bf40f
+4	15	1582617168	src/gooroom-example-resources.c	6073dd7eae3e3920
+15	116	1582617168	src/25a6634@@gooroom-example@exe/meson-generated_.._gooroom-example-resources.c.o	8c07914caccf0431
+5	187	1582617168	src/25a6634@@gooroom-example@exe/gooroom-example-application.c.o	e3c1211de196783a
+5	193	1582617168	src/25a6634@@gooroom-example@exe/gooroom-example-window.c.o	a21013d0a9558edf
+193	259	1582617168	src/gooroom-example	8b3e16535cff7f64
+259	888	0	meson-install	9bd7faa9472bf40f
