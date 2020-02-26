@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/kr/gooroom/Gooroom-Example">
+    <file>subin-window.ui</file>
+    <file>subin-menu.ui</file>
+  </gresource>
+</gresources>

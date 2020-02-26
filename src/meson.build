@@ -1,10 +1,10 @@
-gooroom_example_sources = [
+subin_sources = [
   'main.c',
-  'gooroom-example-application.c',
-  'gooroom-example-window.c',
+  'subin-application.c',
+  'subin-window.c',
 ]
 
-gooroom_example_deps = [
+subin_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
   dependency('gtk+-3.0', version: '>= 3.22'),
   dependency('libgtop-2.0', version: '>=2.37.0'),
@@ -13,12 +13,12 @@ gooroom_example_deps = [
 
 gnome = import('gnome')
 
-gooroom_example_sources += gnome.compile_resources('gooroom-example-resources',
-  'gooroom-example.gresource.xml',
-  c_name: 'gooroom_example'
+subin_sources += gnome.compile_resources('subin-resources',
+  'subin.gresource.xml',
+  c_name: 'subin'
 )
 
-executable('gooroom-example', gooroom_example_sources,
-  dependencies: gooroom_example_deps,
+executable('subin', subin_sources,
+  dependencies: subin_deps,
   install: true,
 )

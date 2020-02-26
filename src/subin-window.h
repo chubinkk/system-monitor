@@ -1,6 +1,6 @@
-/* main.c
+/* subin-window.h
  *
- * Copyright 2020 donghun
+ * Copyright 2020 subin 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,23 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <glib/gi18n.h>
+#pragma once
 
-#include "subin-config.h"
-#include "subin-application.h"
+#include <glib.h>
+#include <gtk/gtk.h>
 
-int
-main (int   argc,
-      char *argv[])
-{
-    g_autoptr(GtkApplication) app = NULL;
+G_BEGIN_DECLS
 
-    /* Set up gettext translations */
-    bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-    bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-    textdomain (GETTEXT_PACKAGE);
+#define SUBIN_TYPE_WINDOW (subin_window_get_type())
 
-    app = GTK_APPLICATION(subin_application_new());
+enum {
+    PROCESS_NAME_COLUMN = 0,
+    PID_COLUMN,
+    USER_COLUMN,
+    CPU_COLUMN,
+    MEMORY_COLUMN,
+    PRIORITY_COLUMN,
+    NICE_COLUMN,
+    VIRTUAL_MEMORY_COLUMN,
+    RESIDENT_MEMORY_COLUMN,
+    SHARED_MEMORY_COLUMN,
+    STATUS_COLUMN,
+    NUM_COLUMNS
+};
 
-    return g_application_run (G_APPLICATION (app), argc, argv);
-}
+G_DECLARE_FINAL_TYPE (SubinWindow, subin_window, SUBIN, WINDOW, GtkApplicationWindow)
+
+G_END_DECLS
