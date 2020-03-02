@@ -21,9 +21,10 @@
 #include <glibtop/procstate.h>
 #include <glibtop/procuid.h>
 
-
 #include "subin-config.h"
 #include "subin-window.h"
+#include "treeview.c"
+#include "subin-proctable.c"
 
 struct _SubinWindow
 {
@@ -44,180 +45,34 @@ struct _SubinWindow
 
 G_DEFINE_TYPE (SubinWindow, subin_window, GTK_TYPE_APPLICATION_WINDOW)
 
-//struct ProcInfo
-//{
-//    const gchar     *process_name;
-//    const gchar     *pid;
-//    const gchar     *user;
-//    const gchar     *cpu;
-//    const gchar     *memory;
-//    const gchar     *priority;
-//    const gchar     *nice;
-//    const gchar     *virtual_memory;
-//    const gchar     *resident_memory;
-//    const gchar     *shared_memory;
-//    const gchar     *status;
-//};
-
 static void
-get_process_info(void)
+search_btn_clicked (GtkButton *button, SubinWindow *win)
 {
-    pid_t*              pid_list;
-    glibtop_cpu         cpu;
-    glibtop_proclist    proclist;
-    glibtop_proc_state  procstate;
-    glibtop_proc_uid    procuid;
-    g_autofree gchar   *pid;
-
-    gint i;
-    gint arg = 0;
-    GError *error = NULL;
-
-    glibtop_get_cpu (&cpu);
-    pid_list = glibtop_get_proclist (&proclist, GLIBTOP_KERN_PROC_ALL, arg);
-    glibtop_get_proc_state (&procstate, arg);
-
-    pid = g_strdup_printf ("task total: %ld\n", proclist.number);
-
-    for (i = 0; i < proclist.number; i++)
-        g_print ("pid[%d]: %d\n",i, pid_list[i]);
-
-/*-------------------------------------------------------------------------------------------*/
-//    g_strdup_printf ("Total %ld , User:%ld\n", cpu.total, cpu.user);
-//    g_strdup_printf ("Proclist number: %ld , Proclist total: %ld , Proclist size: %ld\n", proclist.number, proclist.total, proclist.size);
-//    g_strdup_printf ("Proc_state: %s\n", procstate.cmd);
-//    glibtop_get_proc_uid (pid, pid_list);
-/*-------------------------------------------------------------------------------------------*/
-                    
-}
-
-static GtkTreeModel *
-create_model (void)
-{
-    GtkTreeStore *store;
-    GtkTreeIter iter;
-
-    store = gtk_tree_store_new (NUM_COLUMNS,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING,
-                                G_TYPE_STRING);
-
-    gtk_tree_store_append (store, &iter, NULL);
-    
-    gtk_tree_store_set (store, &iter,
-                        PROCESS_NAME_COLUMN, "name1",
-                        PID_COLUMN, "pid1",
-                        USER_COLUMN, "User1",
-                        CPU_COLUMN, "cpu",
-                        MEMORY_COLUMN, "mem",      
-                        PRIORITY_COLUMN, "Priority1",
-                        NICE_COLUMN, "nice",
-                        VIRTUAL_MEMORY_COLUMN, "virt",
-                        RESIDENT_MEMORY_COLUMN, "resident",
-                        SHARED_MEMORY_COLUMN, "shared",
-                        STATUS_COLUMN,"status");
-
-    return GTK_TREE_MODEL (store);
+    g_print ("= = = = = = => terminate button clicked \n");
 }
 
 static void
-add_columns (GtkTreeView *treeview)
+terminate_btn_clicked (GtkButton *button, SubinWindow *win)
 {
-    gint i = 0;
+    g_print ("= = = = = = => terminate button clicked \n");
+}
 
-    GtkCellRenderer     *renderer;   
-    GtkTreeViewColumn   *column;
-    GtkTreeModel *model = gtk_tree_view_get_model (treeview);
-    
-    /*Process Name*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("Process Name",
-                                                       renderer,
-                                                      "text", PROCESS_NAME_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
+static void
+stop_btn_clicked (GtkButton *button, SubinWindow *win)
+{
+    g_print ("= = = = = = => stop button clicked \n");
+}
 
-    /*PID*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("PID",
-                                                       renderer,
-                                                      "text", PID_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
+static void
+continue_btn_clicked (GtkButton *button, SubinWindow *win)
+{
+    g_print ("= = = = = = => continue button clicked \n");
+}
 
-    /*User*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("User",
-                                                       renderer,
-                                                      "text", USER_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
-
-    /*CPU*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("CPU",
-                                                       renderer,
-                                                      "text", CPU_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
-
-    /*Priority*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("Priority",
-                                                       renderer,
-                                                      "text", PRIORITY_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
-
-    /*Nice*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("Nice",
-                                                       renderer,
-                                                      "text", NICE_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
-
-    /*Virtual Memory*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("Virtual Memory",
-                                                       renderer,
-                                                      "text", VIRTUAL_MEMORY_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
-
-    /*Resident Memory*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("Resident Memory",
-                                                       renderer,
-                                                      "text", RESIDENT_MEMORY_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
-
-    /*Shared Memory*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("Shared Memory",
-                                                       renderer,
-                                                      "text", SHARED_MEMORY_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
-
-    /*Status*/
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes("Status",
-                                                       renderer,
-                                                      "text", STATUS_COLUMN,
-                                                       NULL);
-    gtk_tree_view_append_column (treeview, column);
+static void
+kill_btn_clicked (GtkButton *button, SubinWindow *win)
+{
+    g_print ("= = = = = = => kill button clicked \n");
 }
 
 static void
@@ -244,31 +99,7 @@ subin_window_constructed (GObject *obj)
 
     g_object_unref (model);
 
-    get_process_info();
-}
-
-static void
-terminate_clicked (GtkButton *button, SubinWindow *win)
-{
-    g_print ("= = = = = = => terminate button clicked \n");
-}
-
-static void
-stop_clicked (GtkButton *button, SubinWindow *win) 
-{
-    g_print ("= = = = = = => stop button clicked \n");
-}
-
-static void
-continue_clicked (GtkButton *button, SubinWindow *win)
-{
-    g_print ("= = = = = = => continue button clicked \n");
-}
-
-static void
-kill_clicked (GtkButton *button, SubinWindow *win)
-{
-    g_print ("= = = = = = => kill button clicked \n");
+//    get_process_info();
 }
 
 static void
@@ -276,7 +107,6 @@ subin_window_init (SubinWindow *self)
 {
     gtk_widget_init_template (GTK_WIDGET (self));
     gtk_widget_show_all (GTK_WIDGET (self));
-
 }
 
 static void
@@ -310,9 +140,10 @@ subin_window_class_init (SubinWindowClass *klass)
     gtk_widget_class_bind_template_child (widget_class, SubinWindow, all_tree);
     gtk_widget_class_bind_template_child (widget_class, SubinWindow, my_tree);
 
-    gtk_widget_class_bind_template_callback (widget_class, terminate_clicked);
-    gtk_widget_class_bind_template_callback (widget_class, stop_clicked);
-    gtk_widget_class_bind_template_callback (widget_class, continue_clicked);
-    gtk_widget_class_bind_template_callback (widget_class, kill_clicked);
+    gtk_widget_class_bind_template_callback (widget_class, search_btn_clicked);
+    gtk_widget_class_bind_template_callback (widget_class, terminate_btn_clicked);
+    gtk_widget_class_bind_template_callback (widget_class, stop_btn_clicked);
+    gtk_widget_class_bind_template_callback (widget_class, continue_btn_clicked);
+    gtk_widget_class_bind_template_callback (widget_class, kill_btn_clicked);
 
 }

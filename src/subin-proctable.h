@@ -1,6 +1,6 @@
-/* gooroom-example-window.h
+/* subin-proctable.h
  *
- * Copyright 2020 donghun
+ * Copyright 2020 subin 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,24 +22,22 @@
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
+typedef struct
+{
+    const gchar     *process_name;
+    pid_t            pid;
+    const gchar     *user;
+    const gint       cpu;
+    guint64          memory;
+    const gchar     *priority;
+    const gchar     *nice;
+    const gchar     *virtual_memory;
+    const gchar     *resident_memory;
+    const gchar     *shared_memory;
+    const gchar     *status;
+}ProcInfo;
 
-#define GOOROOM_EXAMPLE_TYPE_WINDOW (gooroom_example_window_get_type())
-
-enum {
-    PROCESS_NAME_COLUMN = 0,
-    PID_COLUMN,
-    USER_COLUMN,
-    CPU_COLUMN,
-    MEMORY_COLUMN,
-    PRIORITY_COLUMN,
-    NICE_COLUMN,
-    VIRTUAL_MEMORY_COLUMN,
-    RESIDENT_MEMORY_COLUMN,
-    SHARED_MEMORY_COLUMN,
-    STATUS_COLUMN,
-    NUM_COLUMNS
-};
-
-G_DECLARE_FINAL_TYPE (GooroomExampleWindow, gooroom_example_window, GOOROOM_EXAMPLE, WINDOW, GtkApplicationWindow)
+void get_process_info (ProcInfo info[]);
 
 G_END_DECLS
+
