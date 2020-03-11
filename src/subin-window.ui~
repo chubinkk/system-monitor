@@ -57,7 +57,6 @@
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
-            <signal name="child-notify" handler="on_stack_child_notify" object="SubinWindow" swapped="no"/>
             <child>
               <object class="GtkBox" id="active_process">
                 <property name="visible">True</property>

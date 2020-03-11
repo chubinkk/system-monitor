@@ -1,6 +1,6 @@
-/* subin-proctable.h
+/* subin-common.h
  *
- * Copyright 2020 subin 
+ * Copyright 2020 subin
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,28 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
 
-#include <glib.h>
+#ifndef SUBIN_COMMON_H_
+#define SUBIN_COMMON_H
+
 #include <gtk/gtk.h>
 
-G_BEGIN_DECLS
 typedef struct
 {
-    const gchar     *process_name;
-    pid_t            pid;
-    const gchar     *user;
-    const gint       cpu;
-    guint64          memory;
-    const gchar     *priority;
-    const gchar     *nice;
-    const gchar     *virtual_memory;
-    const gchar     *resident_memory;
-    const gchar     *shared_memory;
-    const gchar     *status;
-}ProcInfo;
+    guint  id;
+	GPtrArray *sysinfos;
+}COMMON_INFO;
 
-void get_process_info (ProcInfo info[]);
+void start_job();
+void end_job();
 
-G_END_DECLS
-
+#endif /* __SUBIN_COMMON_H*/

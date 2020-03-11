@@ -2,6 +2,9 @@ subin_sources = [
   'main.c',
   'subin-application.c',
   'subin-window.c',
+  'subin-common.c',
+  'subin-tree-view-model.c',
+  'subin-view-model-listeners.c'
 ]
 
 subin_deps = [

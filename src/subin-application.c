@@ -40,6 +40,55 @@ static GActionEntry app_entries[] =
   { "quit", quit_activated, NULL, NULL, NULL }
 };
 
+#if 0
+static void
+search_text_changed (GtkEditable *entry, gpointer data)
+{
+    GtkTreeView         *active_tree;
+
+    gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (gtk_tree_model_sort_get_model (
+                                    GTK_TREE_MODEL_SORT (gtk_tree_view_get_model(
+                                    GTK_TREE_VIEW (active_tree))))));
+}
+
+
+static gboolean
+cb_window_key_press_event (GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{   
+    GtkStack *stack;
+    const char *current_page = gtk_stack_get_visible_child_name (stack);  
+    if (strcmp (current_page, "active_process") == 0)
+        return gtk_search_bar_handle_event (GTK_SEARCH_BAR (user_data), event);
+    
+    return FALSE;
+} 
+
+static void
+create_proc_view(GApplication *app, GtkBuilder * builder)
+{
+    GtkSearchBar        *active_searchbar;
+    GtkSearchEntry      *active_searchentry;
+    GtkButton           *search_btn;
+
+    SubinApplicationPrivate *priv;
+    priv = subin_application_get_instance_private (SUBIN_APPLICATION(app));
+
+    priv->window = gtk_application_get_active_window (GTK_APPLICATION(app));
+
+    /* create popup_menu for the processes tab */
+    active_searchbar = GTK_SEARCH_BAR (gtk_builder_get_object (builder, "proc_searchbar"));
+    active_searchentry = GTK_SEARCH_ENTRY (gtk_builder_get_object (builder, "proc_searchentry"));
+
+    gtk_search_bar_connect_entry (active_searchbar, GTK_ENTRY (active_searchentry));
+    g_signal_connect (priv->window, "key-press-event",
+                      G_CALLBACK (cb_window_key_press_event), active_searchbar);
+
+    g_signal_connect (active_searchentry, "changed", G_CALLBACK (search_text_changed), app);
+
+    g_object_bind_property (active_searchbar, "search-mode-enabled", search_btn, "active", (GBindingFlags)(G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE));
+}
+#endif
+
 static void
 subin_application_startup (GApplication *app)
 {

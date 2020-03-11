@@ -1,4 +1,4 @@
-/* subin-window.h
+/* model.h
  *
  * Copyright 2020 subin 
  *
@@ -20,15 +20,33 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <glib/gprintf.h>
+
+#if 1 
+typedef enum
+{
+    PROCESS_VIEW_ACTIVE,
+    PROCESS_VIEW_ALL,
+    PROCESS_VIEW_MY
+}ProcessView;
+#endif
+
+typedef struct _ProcInfo
+{
+    gchar     *process_name;
+    pid_t      pid;
+    gchar     *user;
+    gint32     uid;
+    gint32     cpu;
+    gint32     memory;
+    gint32     priority;
+    gint32     nice;
+    guint64    virtual_memory;
+    guint64    resident_memory;
+    guint64    shared_memory;
+    gchar     *status;
+}ProcInfo;
 
 
-G_BEGIN_DECLS
 
-#define SUBIN_TYPE_WINDOW (subin_window_get_type())
 
-G_DECLARE_FINAL_TYPE (SubinWindow, subin_window, SUBIN, WINDOW, GtkApplicationWindow)
 
-char* get_stack      (SubinWindow *win);
-
-G_END_DECLS
