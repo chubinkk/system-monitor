@@ -37,6 +37,7 @@ struct _SubinTreeViewModelClass
 
 void                subin_tree_view_model_add_columns (GtkTreeView *treeview);
 void                subin_tree_view_model_selected_row (GtkTreeView *treeview);
+void                subin_tree_view_model_clear (SubinTreeViewModel *view_model);
 
 GType               subin_tree_view_model_get_type (void);
 SubinTreeViewModel *subin_tree_view_model_new (void);

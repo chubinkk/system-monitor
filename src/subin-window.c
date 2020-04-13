@@ -29,10 +29,9 @@ struct _SubinWindow
 typedef struct
 {
     /* Template widgets */
-    GtkHeaderBar        *header_bar;
     GtkStackSwitcher    *stack_switcher;
     GtkStack            *stack;
-    GtkBox              *active_process;
+    GtkSearchBar        *active_searchbar;
     GtkButton           *search_btn;
     GtkButton           *terminate_btn;       
     GtkButton           *stop_btn;
@@ -49,13 +48,12 @@ typedef struct
 
 G_DEFINE_TYPE_WITH_PRIVATE (SubinWindow, subin_window, GTK_TYPE_APPLICATION_WINDOW)
 
-#if 1 /********get stack*******/
-char *
-get_stack (SubinWindow *win)
+static void 
+get_stack (GtkWidget *widget,
+           GdkEvent *event,
+           SubinWindow *win)
 {
-    gchar       *child_name;
-    GtkWidget   *child_all;
-    GtkWidget   *child_my;
+    const gchar *child_name;
 
     SubinWindowPrivate *priv = subin_window_get_instance_private (win);
 
@@ -64,84 +62,10 @@ get_stack (SubinWindow *win)
     gtk_stack_switcher_set_stack (stack_switcher,stack);
     
     child_name = gtk_stack_get_visible_child_name (stack);
-    g_print("%s\n", child_name);
-    
-    child_all = gtk_stack_get_child_by_name (stack, "all process");
-    child_my = gtk_stack_get_child_by_name (stack, "my process");
+    g_print ("%s\n", child_name);
+    subin_tree_view_model_clear (priv->tree_view_model);
 
-    return child_name;
-}
-#endif
-
-#if 1 /********on key pressed, search the process*******/
-static gboolean
-on_key_press_event (GtkWidget *widget,
-                    GdkEvent  *event,
-                    gpointer   user_data)
-{
-    GtkSearchBar *active_searchbar = GTK_SEARCH_BAR (user_data);
-    GtkSearchEntry *searchentry = gtk_search_entry_new ();
-
-    gtk_search_bar_connect_entry (active_searchbar, GTK_ENTRY(searchentry));
-    return gtk_search_bar_handle_event (active_searchbar, event);
-}
-
-static void
-search_event (SubinWindow *win)
-{
-    GtkSearchBar *searchbar = gtk_search_bar_new ();
-    g_signal_connect (win,
-                     "key-press-event",
-                      G_CALLBACK (on_key_press_event),
-                      searchbar);
-}
-#endif
-
-static void
-on_active_process_destroy (GtkWidget *widget, SubinWindow *win)
-{
-    g_print ("= = = = = = => on_active_process_destroy \n");
-}
-
-static void
-on_all_process_destroy (GtkWidget *widget, SubinWindow *win)
-{
-    g_print ("= = = = = = => on_all_process_destroy \n");
-
-}
-
-static void
-on_stack_screen_changed (GtkWidget *widget, SubinWindow *win)
-{
-    g_print ("= = = = = = => on_stack_screen_changed \n");
-
-}
-
-static void
-on_active_process_visibility_notify_event (GtkWidget *widget, SubinWindow *win)
-{
-    g_print ("= = = = = = =>on_active_process_visibility_notify_event  \n");
-
-}
-
-static void
-on_stack_child_notify (GtkWidget *widget, SubinWindow *win)
-{
-    g_print ("= = = = = = =>on_stack_child_notify \n");
-
-}
-
-static void
-on_all_process_visibility_notify_event (GtkWidget *widget, SubinWindow *win)
-{
-    g_print ("= = = = = = =>on_active_process_visibility_notify_event  \n");
-
-}
-
-static void
-on_search_btn_clicked (GtkButton *button, SubinWindow *win)
-{
-    g_print ("= = = = = = => search button clicked \n");
+    set_page (child_name);
 }
 
 static void
@@ -151,16 +75,61 @@ on_terminate_btn_clicked (GtkButton *button, SubinWindow *win)
     GtkTreeSelection *selection;
     GtkTreeModel     *model;
     GtkTreeIter       iter;
+    gchar            *stack;
 
+    GtkWidget        *confirm_dialog;
+    GtkWidget        *error_dialog;
+    gchar            *process_name;
+    int               ret;
+    
     SubinWindowPrivate *priv = subin_window_get_instance_private (win);
 
-    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->active_tree));
+    stack = gtk_stack_get_visible_child_name(priv->stack);
+ 
+    if (strcmp (stack, "active process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->active_tree));
+    else if (strcmp (stack , "all process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->all_tree));
+    else if (strcmp (stack , "my process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->my_tree));
+   
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
-
+    
     if (gtk_tree_selection_get_selected (selection, &model, &iter))
     {
         gtk_tree_model_get (model, &iter, PID_COLUMN, &pid, -1);
-        kill (pid, SIGTERM);
+        gtk_tree_model_get (model, &iter, PROCESS_NAME_COLUMN, &process_name, -1);
+        confirm_dialog = gtk_message_dialog_new (NULL,
+                                                 GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                 GTK_MESSAGE_INFO,
+                                                 GTK_BUTTONS_OK_CANCEL,
+                                                 "정말 %s (PID: %d)을 Terminate하시겠습니까?",
+                                                 process_name,
+                                                 pid);
+        ret = gtk_dialog_run (confirm_dialog);
+        switch (ret)
+        {
+            case GTK_RESPONSE_OK:
+                kill (pid, SIGTERM);
+                break;
+            case GTK_RESPONSE_CANCEL:
+            default:
+                break;
+        }
+        gtk_widget_destroy (confirm_dialog);
+        if (errno == EPERM)
+        {
+            error_dialog = gtk_message_dialog_new (NULL,
+                                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                   GTK_MESSAGE_ERROR,
+                                                   GTK_BUTTONS_CLOSE,
+                                                   "Error message: %s",
+                                                   g_strerror (errno)
+                                                   );
+            gtk_dialog_run (GTK_DIALOG (error_dialog));
+            gtk_widget_destroy (error_dialog);
+            g_free (process_name);
+        }
     }
 }
 
@@ -171,10 +140,19 @@ on_stop_btn_clicked (GtkButton *button, SubinWindow *win)
     GtkTreeSelection *selection;
     GtkTreeModel     *model;
     GtkTreeIter       iter;
+    gchar            *stack;
 
     SubinWindowPrivate *priv = subin_window_get_instance_private (win);
 
-    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->active_tree));
+    stack = gtk_stack_get_visible_child_name(priv->stack);
+
+    if (strcmp (stack, "active process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->active_tree));
+    else if (strcmp (stack , "all process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->all_tree));
+    else if (strcmp (stack , "my process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->my_tree));
+
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
     if (gtk_tree_selection_get_selected (selection, &model, &iter))
@@ -192,10 +170,19 @@ on_continue_btn_clicked (GtkButton *button, SubinWindow *win)
     GtkTreeSelection *selection;
     GtkTreeModel     *model;
     GtkTreeIter       iter;
+    gchar            *stack;
 
     SubinWindowPrivate *priv = subin_window_get_instance_private (win);
 
-    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->active_tree));
+    stack = gtk_stack_get_visible_child_name(priv->stack);
+ 
+    if (strcmp (stack, "active process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->active_tree));
+    else if (strcmp (stack , "all process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->all_tree));
+    else if (strcmp (stack , "my process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->my_tree));
+
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
     if (gtk_tree_selection_get_selected (selection, &model, &iter))
@@ -212,18 +199,85 @@ on_kill_btn_clicked (GtkButton *button, SubinWindow *win)
     GtkTreeSelection *selection;
     GtkTreeModel     *model;
     GtkTreeIter       iter;
+    gchar            *stack;
+
+    GtkWidget        *confirm_dialog;
+    GtkWidget        *error_dialog;
+    gchar            *process_name;
+    int               ret;
 
     SubinWindowPrivate *priv = subin_window_get_instance_private (win);
 
-    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->active_tree));
+    stack = gtk_stack_get_visible_child_name(priv->stack);
+ 
+    if (strcmp (stack, "active process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->active_tree));
+    else if (strcmp (stack , "all process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->all_tree));
+    else if (strcmp (stack , "my process") == 0)
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW(priv->my_tree));
+
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
     if (gtk_tree_selection_get_selected (selection, &model, &iter))
     {
         gtk_tree_model_get (model, &iter, PID_COLUMN, &pid, -1);
+        gtk_tree_model_get (model, &iter, PROCESS_NAME_COLUMN, &process_name, -1);
+        confirm_dialog = gtk_message_dialog_new (NULL,
+                                                 GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                 GTK_MESSAGE_INFO,
+                                                 GTK_BUTTONS_OK_CANCEL,
+                                                 "정말 %s (PID: %d)을 Kill하시겠습니까?",
+                                                 process_name,
+                                                 pid);
+        ret = gtk_dialog_run (confirm_dialog);
+        switch (ret)
+        {
+            case GTK_RESPONSE_OK:
+                kill (pid, SIGKILL);
+                break;
+            case GTK_RESPONSE_CANCEL:
+            default:
+                break;
+        }
+        gtk_widget_destroy (confirm_dialog);
+        if (errno == EPERM)
+        {
+            error_dialog = gtk_message_dialog_new (NULL,
+                                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                                   GTK_MESSAGE_ERROR,
+                                                   GTK_BUTTONS_CLOSE,
+                                                   "Error message: %s",
+                                                   g_strerror (errno)
+                                                   );
+            gtk_dialog_run (GTK_DIALOG (error_dialog));
+            gtk_widget_destroy (error_dialog);
+            g_free (process_name);
+        }
+    }
+
+#if 0
+    if (gtk_tree_selection_get_selected (selection, &model, &iter))
+    {
+        gtk_tree_model_get (model, &iter, PID_COLUMN, &pid, -1);
         kill (pid, SIGKILL);
     }
+#endif
+
 }
+
+static gboolean
+on_key_press_search_event (GtkWidget *widget,
+                           GdkEvent  *event,
+                           gpointer   user_data)
+{
+    GtkSearchBar *active_searchbar = GTK_SEARCH_BAR (user_data);
+    GtkSearchEntry *searchentry = gtk_search_entry_new ();
+    
+    gtk_search_bar_connect_entry (active_searchbar, GTK_ENTRY(searchentry));
+    return gtk_search_bar_handle_event (active_searchbar, event);
+}
+
 
 static gboolean
 subin_window_start_job (gpointer data)
@@ -268,6 +322,7 @@ subin_window_finalize (GObject *self)
     G_OBJECT_CLASS (subin_window_parent_class)->finalize (self);
 }
 
+
 static void
 subin_window_init (SubinWindow *self)
 {
@@ -280,46 +335,32 @@ subin_window_init (SubinWindow *self)
     //Listener Init
     subin_view_model_listeners_init ();
 
-    //Stack
-    gchar *selected_stack;
-    selected_stack = get_stack(win);
-    g_print("%s\n", selected_stack);
+    g_signal_connect (GTK_WIDGET (priv->stack_switcher),
+                      "button-release-event",
+                      G_CALLBACK (get_stack),
+                      self);
 
+    g_signal_connect (win,
+                     "key-press-event",
+                      G_CALLBACK (on_key_press_search_event),
+                      priv->active_searchbar);
+    
     //Tree model set
     priv->tree_view_model = subin_tree_view_model_new ();
 
-#if 1
-    if (strcmp (selected_stack, "active process") == 0)
-    {    
-        subin_tree_view_model_add_columns  (priv->active_tree);
-        gtk_tree_view_set_model (priv->active_tree, GTK_TREE_MODEL (priv->tree_view_model));
-    }
-    else if (strcmp (selected_stack, "all process") == 0)
-    {
-        subin_tree_view_model_add_columns  (priv->all_tree);
-        gtk_tree_view_set_model (priv->all_tree, GTK_TREE_MODEL (priv->tree_view_model));
-	}
-    else if (strcmp (selected_stack, "my process") == 0)
-    {
-        subin_tree_view_model_add_columns  (priv->my_tree);
-        gtk_tree_view_set_model (priv->my_tree, GTK_TREE_MODEL (priv->tree_view_model));
-    }
-#endif
-
-#if 0
     subin_tree_view_model_add_columns  (priv->active_tree);
     gtk_tree_view_set_model (priv->active_tree, GTK_TREE_MODEL (priv->tree_view_model));
-
-   	subin_tree_view_model_add_columns  (priv->all_tree);
+    
+    subin_tree_view_model_add_columns  (priv->all_tree);
     gtk_tree_view_set_model (priv->all_tree, GTK_TREE_MODEL (priv->tree_view_model));
-	
+    
     subin_tree_view_model_add_columns  (priv->my_tree);
     gtk_tree_view_set_model (priv->my_tree, GTK_TREE_MODEL (priv->tree_view_model));
-#endif    
 
     g_timeout_add (100, subin_window_start_job, NULL);
     
 }
+
 
 static void
 subin_window_class_init (SubinWindowClass *klass)
@@ -342,28 +383,18 @@ subin_window_class_init (SubinWindowClass *klass)
     oclass->finalize = subin_window_finalize;
     oclass->constructed = subin_window_constructed;
     
-    gtk_widget_class_set_template_from_resource (widget_class, "/kr/gooroom/Gooroom-Example/subin-window.ui");
+    gtk_widget_class_set_template_from_resource (widget_class, "/kr/gooroom/Subin/subin-window.ui");
     gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, stack_switcher);
     gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, stack);
-    gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, header_bar);
-    gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, search_btn);
+    gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, active_searchbar);
     gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, terminate_btn);
     gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, stop_btn);
     gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, kill_btn);
-    gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, active_process);
     gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, active_tree);
     gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, all_tree);
     gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, my_tree);
     gtk_widget_class_bind_template_child_private (widget_class, SubinWindow, active_scrolled);
 
-    gtk_widget_class_bind_template_callback (widget_class, on_stack_child_notify);
-    gtk_widget_class_bind_template_callback (widget_class, on_all_process_visibility_notify_event);
-    gtk_widget_class_bind_template_callback (widget_class, on_active_process_visibility_notify_event);
-    gtk_widget_class_bind_template_callback (widget_class, on_stack_screen_changed);
-    gtk_widget_class_bind_template_callback (widget_class, on_active_process_destroy);
-    gtk_widget_class_bind_template_callback (widget_class, on_all_process_destroy);
-    gtk_widget_class_bind_template_callback (widget_class, on_search_btn_clicked);
-    gtk_widget_class_bind_template_callback (widget_class, on_search_btn_clicked);
     gtk_widget_class_bind_template_callback (widget_class, on_terminate_btn_clicked);
     gtk_widget_class_bind_template_callback (widget_class, on_stop_btn_clicked);
     gtk_widget_class_bind_template_callback (widget_class, on_continue_btn_clicked);

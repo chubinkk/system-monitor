@@ -4,6 +4,12 @@
 #include "subin-view-model-listeners.h"
 
 G_DEFINE_TYPE (SubinTreeViewModel, subin_tree_view_model, GTK_TYPE_LIST_STORE)
+void
+subin_tree_view_model_clear (SubinTreeViewModel *view_model)
+{
+    gtk_list_store_clear (GTK_LIST_STORE (view_model));
+}
+
 
 void
 subin_tree_view_model_add_columns (GtkTreeView *treeview)
@@ -133,7 +139,7 @@ subin_tree_view_model_set (void *data, void *model)
 #endif
 
 #if 1
-    static void
+static void
 subin_tree_view_model_update (void *data, void *model)
 {
     int i = 0;
@@ -148,8 +154,6 @@ subin_tree_view_model_update (void *data, void *model)
 
     for (i = 0; i < sysinfos->len; i++)
     {
-        //        /*check if model set*/
-        /*if set, compare*/
         found = FALSE;
         if (!gtk_tree_model_get_iter_first (GTK_TREE_MODEL (view_model), &iter))
         {
@@ -178,7 +182,8 @@ subin_tree_view_model_update (void *data, void *model)
                         STATUS_COLUMN,          g_strdup        (info->status),
                         -1);
             }
-        }while (gtk_tree_model_iter_next (GTK_TREE_MODEL (view_model), &iter) && !found);
+        }while (!found && gtk_tree_model_iter_next (GTK_TREE_MODEL (view_model), &iter) );
+
 
         if (!found)
         {
@@ -223,7 +228,7 @@ subin_tree_view_model_update (void *data, void *model)
 }
 #endif
 
-    static void
+static void
 subin_tree_view_model_dispose (GObject *object)
 {
     SubinTreeViewModel *view_model = SUBIN_TREE_VIEW_MODEL (object);
@@ -232,13 +237,13 @@ subin_tree_view_model_dispose (GObject *object)
     G_OBJECT_CLASS (subin_tree_view_model_parent_class)->dispose (object);
 }
 
-    static void
+static void
 subin_tree_view_model_finalize (GObject *object)
 {
     G_OBJECT_CLASS (subin_tree_view_model_parent_class)->finalize (object);
 }
 
-    static void
+static void
 subin_tree_view_model_class_init (SubinTreeViewModelClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -246,7 +251,7 @@ subin_tree_view_model_class_init (SubinTreeViewModelClass *klass)
     object_class->finalize = subin_tree_view_model_finalize;
 }
 
-    static void
+static void
 subin_tree_view_model_init (SubinTreeViewModel *self)
 {
     GType types[NUM_COLUMNS];
@@ -268,7 +273,7 @@ subin_tree_view_model_init (SubinTreeViewModel *self)
     subin_view_model_listeners_register (EVENT_UPDATE, subin_tree_view_model_update, self);
 }
 
-    SubinTreeViewModel*
+SubinTreeViewModel*
 subin_tree_view_model_new (void)
 {
     return  g_object_new (SUBIN_TYPE_TREE_VIEW_MODEL, NULL);

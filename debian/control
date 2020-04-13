@@ -1,4 +1,4 @@
-Source: gooroom-example
+Source: subin
 Section: gnome
 Priority: optional
 Maintainer: Gooroom Maintainers <gooroom@gooroom.kr>
@@ -11,7 +11,7 @@ Build-Depends: appstream-util,
                libgtk-3-dev (>= 3.20.0)
 Standards-Version: 3.9.6
 
-Package:gooroom-example
+Package: subin
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Default Application

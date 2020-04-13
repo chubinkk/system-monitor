@@ -1,0 +1,12 @@
+Package: subin-dbgsym
+Source: subin
+Version: 0.1.0+grm1u1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: Gooroom Maintainers <gooroom@gooroom.kr>
+Installed-Size: 73
+Depends: subin (= 0.1.0+grm1u1)
+Section: debug
+Priority: optional
+Description: debug symbols for subin
+Build-Ids: d1bf4a3a652ee474f6cedeb0bc83470ddb7d89c3

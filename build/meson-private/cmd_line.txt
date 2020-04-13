@@ -1,5 +1,0 @@
-[options]
-prefix = /home/user/myGTK/revision/subin_project/install
-
-[properties]
-

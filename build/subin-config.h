@@ -5,9 +5,9 @@
 
 #pragma once
 
-#define GETTEXT_PACKAGE "subin-example"
+#define GETTEXT_PACKAGE "subin"
 
-#define LOCALEDIR "/home/user/myGTK/revision/subin_project/install/share/locale"
+#define LOCALEDIR "/home/user/subin_project/install/share/locale"
 
 #define PACKAGE_VERSION "0.1.0"
 

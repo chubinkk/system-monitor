@@ -1,9 +1,0 @@
-Package: gooroom-example
-Version: 0.1.0+grm1u1
-Architecture: amd64
-Maintainer: Gooroom Maintainers <gooroom@gooroom.kr>
-Installed-Size: 67
-Depends: libc6 (>= 2.4), libglib2.0-0 (>= 2.44.0), libgtk-3-0 (>= 3.9.10), libgtop-2.0-11 (>= 2.22.3), dconf-gsettings-backend | gsettings-backend
-Section: gnome
-Priority: optional
-Description: Default Application

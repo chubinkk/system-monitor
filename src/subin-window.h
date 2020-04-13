@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <glib/gprintf.h>
+#include <errno.h>
 
 
 G_BEGIN_DECLS
@@ -28,7 +29,5 @@ G_BEGIN_DECLS
 #define SUBIN_TYPE_WINDOW (subin_window_get_type())
 
 G_DECLARE_FINAL_TYPE (SubinWindow, subin_window, SUBIN, WINDOW, GtkApplicationWindow)
-
-char* get_stack      (SubinWindow *win);
 
 G_END_DECLS

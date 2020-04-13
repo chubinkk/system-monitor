@@ -29,15 +29,20 @@
 
 static COMMON_INFO *info = NULL;
 
-//void get_stack_page
+static gchar *g_page_name = "active process"; 
+//static int g_flag = 0; 
 
-
+void 
+set_page (gchar *page_name)
+//set_flag (int flag)
+{
+    g_page_name = page_name;    
+}
 
 static gboolean
 update_data (gpointer data)
 {
     COMMON_INFO   *infos;
-//    ProcessView    process_view;
     EventHandlers *handlers = NULL;
 
     struct passwd*      pwd;
@@ -54,21 +59,26 @@ update_data (gpointer data)
 
 	infos = data;
 
-#if 0
-    if ()
+#if 1
+    if (strcmp (g_page_name, "active process") == 0)
+//    if (g_flag == 0)
+    {
         whose = GLIBTOP_KERN_PROC_ALL | GLIBTOP_EXCLUDE_IDLE;
-    else if (pv == PV_All)
+    }
+    else if (strcmp (g_page_name , "all process") == 0)
+//    else if (g_flag == 1)
+    {
         whose = GLIBTOP_KERN_PROC_ALL;
-    else if (pv == PV_My)
+    }
+    else if (strcmp (g_page_name , "my process") == 0)
+//    else if (g_flag  == 2)
     {
         whose = GLIBTOP_KERN_PROC_UID;
-        arg = /*uid*/;
+        arg = getuid();
     }
 
     pid_list = glibtop_get_proclist (&proclist, whose, arg);
 #endif
-
-    pid_list = glibtop_get_proclist (&proclist, GLIBTOP_KERN_PROC_ALL, arg);
 
     for (i = infos->sysinfos->len -1; 0 <= i; i--)
 	{
@@ -91,14 +101,15 @@ update_data (gpointer data)
         info->pid = pid_list[i];
         info->uid = proc_uid.uid;
 
-        /* user: get process informations of the user */
-        pwd = getpwuid (info->uid); //          
+        pwd = getpwuid (info->uid);          
         if (pwd && pwd->pw_name)
+        {
             info->user = g_strdup (pwd->pw_name);
+        }
         else
         {
-            char username[16];
-            g_sprintf (username, "%d", info->uid);
+            gchar *username;
+            username = g_strdup_printf ("%d", info->uid);
             info->user = username;
         }
 

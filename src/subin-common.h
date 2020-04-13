@@ -28,7 +28,9 @@ typedef struct
 	GPtrArray *sysinfos;
 }COMMON_INFO;
 
-void start_job();
-void end_job();
+void set_page   (gchar *page_name);
+//void set_flag   (int flag);
+void start_job  ();
+void end_job    ();
 
 #endif /* __SUBIN_COMMON_H*/

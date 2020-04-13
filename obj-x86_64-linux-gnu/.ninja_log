@@ -1,0 +1,14 @@
+# ninja log v5
+0	185	1586769395	data/kr.gooroom.Gooroom-Example.desktop	d7858c0f8c966250
+185	373	1586769396	data/kr.gooroom.Gooroom-Example.appdata.xml	1e12d8b23c25ef19
+373	379	1586769396	src/subin-resources.c	79420669d80f40d
+379	382	1586769396	src/subin-resources.h	82b6698d53b1eaf0
+382	484	1586769396	src/25a6634@@subin@exe/meson-generated_.._subin-resources.c.o	67999c2293e4484f
+487	668	1586769396	src/25a6634@@subin@exe/main.c.o	182151e4e7a32f8e
+671	867	1586769396	src/25a6634@@subin@exe/subin-application.c.o	8e971e51798265cb
+867	1112	1586769396	src/25a6634@@subin@exe/subin-window.c.o	e7ae47e940715f8c
+1113	1316	1586769397	src/25a6634@@subin@exe/subin-common.c.o	2ce44e472e3e358f
+1316	1540	1586769397	src/25a6634@@subin@exe/subin-tree-view-model.c.o	53c81dfb9936e8ab
+1540	1727	1586769397	src/25a6634@@subin@exe/subin-view-model-listeners.c.o	fadafaa6369bc17e
+1727	1811	1586769397	src/subin	a6b3b9c5bc97eef5
+6	428	0	meson-install	9bd7faa9472bf40f

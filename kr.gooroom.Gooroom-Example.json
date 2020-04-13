@@ -1,9 +1,9 @@
 {
-    "app-id": "kr.gooroom.Gooroom-Example",
+    "app-id": "kr.gooroom.Subin",
     "runtime": "org.gnome.Platform",
     "runtime-version": "3.28",
     "sdk": "org.gnome.Sdk",
-    "command": "gooroom-example",
+    "command": "subin",
     "finish-args": [
         "--share=network",
         "--share=ipc",
@@ -34,14 +34,14 @@
     ],
     "modules": [
         {
-            "name": "gooroom-example",
+            "name": "subin",
             "buildsystem": "meson",
             "config-opts": [ "--libdir=lib" ],
             "builddir": true,
             "sources": [
                 {
                     "type": "git",
-                    "url": "file:///home/user/project/gooroom-example"
+                    "url": "file:///home/user/project/subin"
                 }
             ]
         }

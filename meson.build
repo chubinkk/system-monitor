@@ -1,4 +1,4 @@
-project('gooroom-example', 'c',
+project('subin', 'c',
          version: '0.1.0',
          meson_version: '>= 0.40.0',
        )
@@ -7,7 +7,7 @@ i18n = import('i18n')
 
 config_h = configuration_data()
 config_h.set_quoted('PACKAGE_VERSION', meson.project_version())
-config_h.set_quoted('GETTEXT_PACKAGE', 'subin-example')
+config_h.set_quoted('GETTEXT_PACKAGE', 'subin')
 config_h.set_quoted('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
 configure_file(
   output: 'subin-config.h',

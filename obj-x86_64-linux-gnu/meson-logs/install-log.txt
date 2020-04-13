@@ -1,0 +1,18 @@
+# List of files installed by Meson
+# Does not contain files installed by custom scripts.
+/home/user/subin_project/debian/subin/usr/share/applications/kr.gooroom.Gooroom-Example.desktop
+/home/user/subin_project/debian/subin/usr/share/appdata/kr.gooroom.Gooroom-Example.appdata.xml
+/home/user/subin_project/debian/subin/usr/bin/subin
+/home/user/subin_project/debian/subin/usr/share/glib-2.0/schemas/kr.gooroom.Gooroom-Example.gschema.xml
+/home/user/subin_project/debian/subin/usr/share/icons/hicolor/scalable/apps/taskmanager.svg
+/home/user/subin_project/debian/subin/usr/share/icons/hicolor/scalable/apps
+/home/user/subin_project/debian/subin/usr/share/icons/hicolor/scalable
+/home/user/subin_project/debian/subin/usr/share/icons/hicolor
+/home/user/subin_project/debian/subin/usr/share/icons
+/home/user/subin_project/debian/subin/usr/share/glib-2.0/schemas
+/home/user/subin_project/debian/subin/usr/share/glib-2.0
+/home/user/subin_project/debian/subin/usr/bin
+/home/user/subin_project/debian/subin/usr/share/appdata
+/home/user/subin_project/debian/subin/usr/share/applications
+/home/user/subin_project/debian/subin/usr/share
+/home/user/subin_project/debian/subin/usr

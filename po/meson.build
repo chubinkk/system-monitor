@@ -1,1 +1,1 @@
-i18n.gettext('gooroom-example', preset: 'glib')
+i18n.gettext('subin', preset: 'glib')
